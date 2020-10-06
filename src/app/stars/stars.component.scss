@@ -1,3 +1,5 @@
+@import '/projects/ngx-bar-rating/themes/variables';
+
 section {
   display: flex;
   flex-direction: column;
@@ -15,4 +17,10 @@ section {
   cursor: pointer;
   text-decoration: none;
   color: #50e3c2;
+}
+
+.fa-theme {
+  --br-unit-gap: 2px;
+  color: $green-color;
+  font-size: 20px;
 }

@@ -3,6 +3,7 @@ import {
   Input,
   Output,
   EventEmitter,
+  ContentChild,
   OnInit,
   OnChanges,
   SimpleChanges,
@@ -11,6 +12,7 @@ import {
   forwardRef
 } from '@angular/core';
 import { ControlValueAccessor, Validator, NG_VALIDATORS, NG_VALUE_ACCESSOR, FormControl } from '@angular/forms';
+import { BarRatingUnit, BarRatingUnitActive, BarRatingUnitFraction, BarRatingUnitSelected } from './bar-rating-unit';
 
 /** This allows support [(ngModel)] and ngControl. */
 const RATING_VALUE_ACCESSOR = {
@@ -26,6 +28,13 @@ const RATING_VALUE_VALIDATOR = {
   multi: true,
 };
 
+enum BarRatingUnitState {
+  default = 'default',
+  selected = 'selected',
+  active = 'active',
+  fraction = 'fraction'
+}
+
 @Component({
   selector: 'bar-rating',
   templateUrl: './bar-rating.html',
@@ -35,9 +44,11 @@ const RATING_VALUE_VALIDATOR = {
 })
 export class BarRating implements OnInit, OnChanges, ControlValueAccessor, Validator {
 
-  contexts: { fraction: boolean, selected: boolean, active: boolean, click: (e) => void, enter: () => void }[] = [];
+  contexts: { state: BarRatingUnitState, click: (e) => void, enter: () => void }[] = [];
   nextRate: number;
   disabled: boolean;
+
+  unitState = BarRatingUnitState;
 
   /** Current rating. Can be a decimal value like 3.14 */
   @Input() rate;
@@ -78,6 +89,14 @@ export class BarRating implements OnInit, OnChanges, ControlValueAccessor, Valid
    */
   @Output() rateChange = new EventEmitter<number>(true);
 
+  /**
+   * Custom rating templates
+   */
+  @ContentChild(BarRatingUnit) brUnit: BarRatingUnit;
+  @ContentChild(BarRatingUnitActive) brUnitActive: BarRatingUnitActive;
+  @ContentChild(BarRatingUnitSelected) brUnitSelected: BarRatingUnitSelected;
+  @ContentChild(BarRatingUnitFraction) brUnitFraction: BarRatingUnitFraction;
+
   constructor(private changeDetectorRef: ChangeDetectorRef) {
   }
 
@@ -89,9 +108,7 @@ export class BarRating implements OnInit, OnChanges, ControlValueAccessor, Valid
 
   ngOnInit(): void {
     this.contexts = Array.from({ length: this.max }, (context, i) => ({
-      selected: false,
-      fraction: false,
-      active: false,
+      state: BarRatingUnitState.default,
       click: (e) => this.handleClick(e, i + 1),
       enter: () => this.handleEnter(i + 1)
     }));
@@ -122,9 +139,11 @@ export class BarRating implements OnInit, OnChanges, ControlValueAccessor, Valid
     this.nextRate = nextValue - 1;
     /** Set the rating */
     this.contexts = Array.from({ length: this.max }, (context, index) => ({
-      selected: index + 1 <= nextValue,
-      fraction: (index + 1 === Math.round(nextValue) && nextValue % 1) >= 0.5,
-      active: false,
+      state: index + 1 <= nextValue
+        ? BarRatingUnitState.selected
+        : (index + 1 === Math.round(nextValue) && nextValue % 1) >= 0.5
+          ? BarRatingUnitState.fraction
+          : BarRatingUnitState.default,
       click: (e) => this.handleClick(e, index),
       enter: () => this.handleEnter(index)
     }));
@@ -141,9 +160,7 @@ export class BarRating implements OnInit, OnChanges, ControlValueAccessor, Valid
     if (!this.disabled && !this.readOnly) {
       /** Add selected class for rating hover */
       this.contexts.map((context, i) => {
-        context.active = i <= index;
-        context.fraction = false;
-        context.selected = false;
+        context.state = i <= index ? BarRatingUnitState.active : BarRatingUnitState.default;
       });
       this.nextRate = index;
       this.hover.emit(index);

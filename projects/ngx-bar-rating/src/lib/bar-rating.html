@@ -5,11 +5,20 @@
   <div class="br-units" (mouseleave)="reset()">
 
     <div class="br-unit" *ngFor="let unit of contexts"
-         [class.br-fraction]="unit.fraction"
-         [class.br-selected]="unit.selected"
-         [class.br-active]="unit.active"
+         [class.br-fraction]="unit.state === unitState.fraction"
+         [class.br-selected]="unit.state === unitState.selected"
+         [class.br-active]="unit.state === unitState.active"
          (click)="unit.click($event)"
-         (mouseenter)="unit.enter()"></div>
+         (mouseenter)="unit.enter()">
+
+      <ng-container [ngSwitch]="unit.state">
+        <ng-template *ngSwitchCase="unitState.selected" [ngTemplateOutlet]="brUnitSelected?.template"></ng-template>
+        <ng-template *ngSwitchCase="unitState.active" [ngTemplateOutlet]="brUnitActive?.template || brUnitSelected?.template"></ng-template>
+        <ng-template *ngSwitchCase="unitState.fraction" [ngTemplateOutlet]="brUnitFraction?.template"></ng-template>
+        <ng-template *ngSwitchDefault [ngTemplateOutlet]="brUnit?.template"></ng-template>
+      </ng-container>
+
+    </div>
   </div>
 
   <div *ngIf="showText" class="br-text">{{ nextRate | rateTitle: titles }}</div>

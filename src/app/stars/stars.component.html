@@ -4,7 +4,14 @@
 
     <div class="col-md-4">
       <section>
-        <bar-rating [(rate)]="cssRate" [max]="5"></bar-rating>
+        <bar-rating [(rate)]="cssRate" [max]="5">
+<!--          <ng-template brUnitSelected>-->
+<!--            <i class="fa fa-star" aria-hidden="true"></i>-->
+<!--          </ng-template>-->
+<!--          <ng-template brUnit>-->
+<!--            <i class="fa fa-star-o" aria-hidden="true"></i>-->
+<!--          </ng-template>-->
+        </bar-rating>
         <p>CSS Stars</p>
       </section>
     </div>
@@ -27,9 +34,19 @@
 
   <section>
     <h3>It can be used to display fractional star ratings.</h3>
-    <bar-rating [rate]="faoRate" (rateChange)="onFaoRate($event)" [max]="10" [theme]="'fontawesome-o'"></bar-rating>
-    <!--<bar-rating [ngModel]="faoRate" (ngModelChange)="onFaoRate($event)" [max]="10" [theme]="'fontawesome-o'"></bar-rating>-->
+    <bar-rating class="fa-theme" [rate]="faoRate" [max]="10" (rateChange)="onFaoRate($event)">
+      <ng-template brUnitSelected>
+        <i class="fa fa-star" style="color: #50e3c2"></i>
+      </ng-template>
+      <ng-template brUnitFraction>
+        <i class="fa fa-star-half-o" style="color: #50e3c2"></i>
+      </ng-template>
+      <ng-template brUnit>
+        <i class="fa fa-star-o" style="color: #d2d2d2"></i>
+      </ng-template>
+    </bar-rating>
+
     <p *ngIf="!faoRated">Current rating: {{faoRate}}</p>
-    <p *ngIf="faoRated">Your rating: {{faoRate}} <i class="link fa fa-times-circle" (click)="faoReset(5.6)"></i></p>
+    <p *ngIf="faoRated">Your rating: {{faoRate}} <i class="link fa fa-times-circle" (click)="faoReset()"></i></p>
   </section>
 </div>
