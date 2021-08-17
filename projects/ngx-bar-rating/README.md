@@ -28,7 +28,7 @@ ___
 
 Install it with npm
 
-`npm i ngx-bar-rating`
+`npm i @arbitral/ngx-bar-rating`
 
 
 <a name="usage"/>
