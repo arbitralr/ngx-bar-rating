@@ -1,5 +1,15 @@
 # Changelog
 
+## 8.1.0
+
+- Upgrade to Angular 20 across workspace.
+- Replace `@angular-devkit/build-angular` with `@angular/build` builders.
+- Standalone-only public API: remove `BarRatingModule`, export standalone components/directives.
+- Demo zoneless: enable zoneless change detection and remove `zone.js` polyfill.
+- Disable demo prerender to avoid route extraction under zoneless.
+- Upgrade `@angular-eslint/*` and TypeScript/TS-ESLint to latest compatible versions.
+- Bump library version to `8.1.0`.
+
 ## 8.0.1
 
 - refactor: export `BarRatinEffect` directive in `BarRatingModule`.
@@ -61,6 +71,10 @@
  - Remove FontAwesome CSS themes, use custom directives instead.
  - Remove Bootstrap CSS themes, use custom directives instead.
  - When passing `[titles]` array, the first index will represent `null` or `0` value
+
+## 2.1.0
+
+- Upgrade to Angular 12.
 
 ## 2.0.0
 

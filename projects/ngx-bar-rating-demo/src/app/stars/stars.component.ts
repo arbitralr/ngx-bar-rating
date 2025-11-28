@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
-import { BarRatingEffect, BarRatingModule } from 'ngx-bar-rating';
+import { BarRating, BarRatingEffect, ActiveRating, InactiveRating, FractionRating } from 'ngx-bar-rating';
 
 @Component({
   selector: 'stars',
@@ -8,8 +8,11 @@ import { BarRatingEffect, BarRatingModule } from 'ngx-bar-rating';
   styleUrl: './stars.component.scss',
   imports: [
     FaIconComponent,
-    BarRatingModule,
-    BarRatingEffect
+    BarRating,
+    BarRatingEffect,
+    ActiveRating,
+    InactiveRating,
+    FractionRating
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
