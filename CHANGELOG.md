@@ -62,6 +62,10 @@
  - Remove Bootstrap CSS themes, use custom directives instead.
  - When passing `[titles]` array, the first index will represent `null` or `0` value
 
+## 2.1.0
+
+- Upgrade to Angular 12.
+
 ## 2.0.0
 
  - Upgrade to Angular 10, closes [#53](https://github.com/MurhafSousli/ngx-bar-rating/issues/53).
