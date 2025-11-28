@@ -1,28 +1,39 @@
-@import 'variables';
-
 .br-square {
+  --_br-active-color: #4278F5;
+  --_br-font-size: 30px;
+  --br-width: var(--_br-font-size);
+  --br-height: var(--_br-font-size);
 
   .br-units {
     counter-reset: counter;
   }
 
-  .br-unit {
-    width: 30px;
-    height: 30px;
-    border: 2px solid lighten($blue-color, 25%);
+  .br-unit-clone {
+    .br-unit-inner {
+      background-color: transparent;
+
+      &:after {
+        content: none !important;
+      }
+    }
+  }
+
+  .br-unit-inner {
+    width: var(--br-width);
+    height: var(--br-height);
+    border: 2px solid var(--_br-active-color);
     background-color: white;
     margin: 2px;
     text-decoration: none;
     font-size: 14px;
     line-height: 2;
     text-align: center;
-    color: lighten($blue-color, 25%);
+    color: var(--_br-active-color);
     font-weight: 600;
+    opacity: 0.25;
 
-    &.br-active,
-    &.br-selected {
-      border: 2px solid $blue-color;
-      color: $blue-color;
+    &.br-active {
+      opacity: 1;
     }
 
     &:after {
@@ -33,14 +44,8 @@
 
   &.br-readonly {
 
-    .br-active,
-    .br-selected {
-      border: 2px solid lighten($blue-color, 10%);
-      color: lighten($blue-color, 10%);
-    }
-
-    .br-theme {
-      color: lighten($orange-color, 10%);
+    .br-active {
+      opacity: 0.1;
     }
   }
 }

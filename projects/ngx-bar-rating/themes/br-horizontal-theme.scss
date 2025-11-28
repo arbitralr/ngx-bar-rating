@@ -1,6 +1,6 @@
-@import 'variables';
-
 .br-horizontal {
+  --br-width: 12px;
+  --br-height: 32px;
 
   display: flex;
   justify-content: center;
@@ -9,36 +9,35 @@
   .br-units {
   }
 
-  .br-unit {
+  .br-unit-inner {
     display: block;
-    width: 12px;
-    height: 32px;
+    width: var(--br-width);
+    height: var(--br-height);
     float: left;
-    background-color: lighten($orange-color, 25%);
+    background-color: var(--_br-active-color);
     margin: 1px;
     text-align: center;
+    opacity: 0.25;
 
-    &.br-active,
-    &.br-selected {
-      background-color: $orange-color;
+    &.br-active {
+      opacity: 1;
     }
   }
 
   &.br-readonly {
-    .br-unit {
+    .br-unit-inner {
       cursor: default;
 
-      &.br-active,
-      &.br-selected {
-        background-color: lighten($orange-color, 10%);
+      &.br-active {
+        opacity: 0.1;
       }
     }
-
   }
+
   .br-text {
     width: 20px;
     margin-left: 20px;
     font-size: 18px;
-    color: $orange-color;
+    color: var(--_br-active-color);
   }
 }

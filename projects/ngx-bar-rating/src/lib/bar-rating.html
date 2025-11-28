@@ -1,16 +1,47 @@
-<div class="br br-{{theme}}"
-     [class.br-readonly]="readOnly"
-     [class.br-disabled]="disabled">
+<div class="br br-{{ customInActiveRating() ? '' : theme() }}"
+     [class.br-readonly]="readonly()"
+     [class.br-disabled]="disabled"
+     role="button"
+     [attr.tabindex]="disabled || readonly() ? -1 : tabIndex()"
+     (focusout)="onTouched()"
+     (click)="handleClick($event)"
+     (keydown)="handleKeydown($event)">
 
-  <div class="br-units" (mouseleave)="reset()">
-
-    <div class="br-unit" *ngFor="let unit of contexts"
-         [class.br-fraction]="unit.fraction"
-         [class.br-selected]="unit.selected"
-         [class.br-active]="unit.active"
-         (click)="unit.click($event)"
-         (mouseenter)="unit.enter()"></div>
+  <div class="br-units"
+       (mouseleave)="hoveredIndex.set(0)">
+    @for (unit of contexts(); let i = $index; track i) {
+      @let value = i + 1;
+      <div class="br-unit"
+           [attr.data-value]="value"
+           (mouseenter)="hoveredIndex.set(value)">
+        @switch (unit) {
+          @case (UNITS.fraction) {
+            <ng-template [ngTemplateOutlet]="customFractionRating()?.template || fractionTemplate"/>
+          }
+          @case (UNITS.inactive) {
+            <ng-template [ngTemplateOutlet]="customInActiveRating()?.template || inactiveTemplate"/>
+          }
+          @default {
+            <ng-template [ngTemplateOutlet]="customActiveRating()?.template || activeTemplate"/>
+          }
+        }
+      </div>
+    }
   </div>
 
-  <div *ngIf="showText" class="br-text">{{ nextRate | rateTitle: titles }}</div>
+  @if (showText()) {
+    <div class="br-text">{{ ratingText() }}</div>
+  }
 </div>
+
+<ng-template #fractionTemplate>
+  <div class="br-unit-inner br-fraction"></div>
+</ng-template>
+
+<ng-template #activeTemplate>
+  <div class="br-unit-inner br-active"></div>
+</ng-template>
+
+<ng-template #inactiveTemplate>
+  <div class="br-unit-inner br-inactive"></div>
+</ng-template>

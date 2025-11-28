@@ -1,7 +1,6 @@
-@import 'variables';
-
 .br-vertical {
-
+  --br-width: 120px;
+  --br-height: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,31 +11,29 @@
     margin: 10px 0;
   }
 
-  .br-unit {
+  .br-unit-inner {
     display: block;
-    width: 120px;
-    height: 5px;
-    background-color: lighten($orange-color, 25%);
+    width: var(--br-width);
+    height: var(--br-height);
+    background-color: var(--_br-active-color);
     margin-top: 1px;
+    opacity: 0.25;
 
-    &.br-active,
-    &.br-selected {
-      background-color: $orange-color;
+    &.br-active {
+      opacity: 1;
     }
   }
 
   &.br-readonly {
 
-    .br-active,
-    .br-selected {
-      border: 2px solid lighten($blue-color, 10%);
-      color: lighten($blue-color, 10%);
+    .br-active {
+      opacity: 0.1;
     }
   }
 
   .br-text {
     font-size: 18px;
     font-weight: 600;
-    color: $orange-color;
+    color: var(--_br-active-color);
   }
 }
